@@ -3,4 +3,4 @@
 
 ### Member:
 1. Varith H.
-2.Thanat P.
+2. Thanat P.
