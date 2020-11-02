@@ -31,8 +31,8 @@ Responds with a 400 status plain text message if limit is below 1 or if category
 __________________________________________________________________________________________________________________________________________________________________________
 
 
-## /:Menu/master
-**Request Format:** /Menu/master
+## /:menu/master
+**Request Format:** /menu/master
 
 **Request Type:** GET
 
@@ -42,7 +42,7 @@ ________________________________________________________________________________
 Menu Name
 Price
 
-**Example Request:** /Menu/master
+**Example Request:** /menu/master
 
 **Example Response:**
 
