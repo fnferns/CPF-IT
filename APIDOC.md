@@ -26,7 +26,6 @@ Sports equipment online store webservice providing data of items in the store an
 
 
 **Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category is invalid.
 
 __________________________________________________________________________________________________________________________________________________________________________
 
@@ -73,12 +72,11 @@ ________________________________________________________________________________
 
 
 **Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category is invalid.
 
 __________________________________________________________________________________________________________________________________________________________________________
 
 ## /log_in
-**Request Format:** /log_in[?phone=*phone*&password=*password*]
+**Request Format:** /log_in?phone=*phone*&password=*password*
 
 **Request Type:** GET
 
@@ -86,7 +84,7 @@ ________________________________________________________________________________
 
 **Description:** get user account info
 
- **Example Request:** /log_in?phone=08989898989&password=MyNameIsBookie
+**Example Request:** /log_in?phone=08989898989&password=MyNameIsBookie
 
 **Example Response:**
 
@@ -114,14 +112,13 @@ ________________________________________________________________________________
 ```
 
 **Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category is invalid.
 
 __________________________________________________________________________________________________________________________________________________________________________
 
 # Menu APIs
 
 ## /menu/master
-**Request Format:** /menu/master
+**Request Format:** /menu/master[?limit=*limit*]
 
 **Request Type:** GET
 
@@ -129,7 +126,7 @@ ________________________________________________________________________________
 
 **Description:** Get centralized menu
 
-**Example Request:** /menu/master
+**Example Request:** /menu/master?limit=2
 
 **Example Response:**
 
@@ -151,12 +148,11 @@ ________________________________________________________________________________
 ```
 
 **Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category is invalid.
 
 __________________________________________________________________________________________________________________________________________________________________________
 
 ## /menu/branch
-**Request Format:** /menu/branch[?branch=*branch*]
+**Request Format:** /menu/branch?name=*branch*[&limit=*limit*]
 
 **Request Type:** GET
 
@@ -164,7 +160,7 @@ ________________________________________________________________________________
 
 **Description:** Get franchise-specific menu, including promotions
 
-**Example Request:** /menu/branch[?branch=TrokChan]
+**Example Request:** /menu/branch?name=TrokChan&limit=2
 
 **Example Response:**
 
@@ -186,12 +182,11 @@ ________________________________________________________________________________
 ```
 
 **Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category or gender is invalid.
 
 __________________________________________________________________________________________________________________________________________________________________________
 
 ## /menu/product
-**Request Format:** /menu/product[?product=*product*]
+**Request Format:** /menu/product?id=*id*
 
 **Request Type:** GET
 
@@ -199,38 +194,28 @@ ________________________________________________________________________________
 
 **Description:** get product details
 
-**Example Request:**  /menu/product[?product=*product*]
+**Example Request:**  /menu/product?id=1
 
 **Example Response:**
 
 ```json
-[
   {
     "menu_id": 1,
     "name": "CHICKEN RICE",
     "price": 69.95,
     "pic_URL":"frkforkofr.com",
     "description": "very good chicken and rice"
-  },
-  {
-    "menu_id": 2,
-    "name": "CHICKEN STICKY RICE",
-    "price": 69.69,
-    "pic_URL":"69420.com",
-    "description": "nice sticky rice "
   }
-]
 ```
 
 **Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category or gender is invalid.
 
 
 __________________________________________________________________________________________________________________________________________________________________________
 
 
 ## /cart
-**Request Format:** /cart[?id=*id*]
+**Request Format:** /cart?id=*id*
 
 **Request Type:** GET
 
@@ -240,7 +225,7 @@ ________________________________________________________________________________
 **Description:** lists items in cart of a user
 
 
-**Example Request:**  /cart[?id=1234789327654]
+**Example Request:**  /cart?id=1234789327654
 
 **Example Response:**
 
@@ -265,7 +250,6 @@ ________________________________________________________________________________
 ```
 
 **Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category or gender is invalid.
 
 
 __________________________________________________________________________________________________________________________________________________________________________
