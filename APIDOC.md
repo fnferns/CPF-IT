@@ -30,6 +30,7 @@ Responds with a 400 status plain text message if limit is below 1 or if category
 
 __________________________________________________________________________________________________________________________________________________________________________
 
+# Menu APIs
 
 ## /menu/master
 **Request Format:** /menu/master
@@ -38,9 +39,7 @@ ________________________________________________________________________________
 
 **Returned Data Format**: JSON
 
-**Description:** Menu: - Picture URL
-Menu Name
-Price
+**Description:** Get centralized menu
 
 **Example Request:** /menu/master
 
@@ -75,9 +74,7 @@ ________________________________________________________________________________
 
 **Returned Data Format**: JSON
 
-**Description:** Menu: - Picture URL
-Menu Name
-Price
+**Description:** Get franchise-specific menu, including promotions
 
 **Example Request:** /menu/branch[?branch=TrokChan]
 
@@ -112,9 +109,7 @@ ________________________________________________________________________________
 
 **Returned Data Format**: JSON
 
-**Description:** Menu: - Picture URL
-Menu Name
-Price
+**Description:** get product details
 
 **Example Request:**  /menu/product[?product=*product*]
 
@@ -146,48 +141,6 @@ Responds with a 400 status plain text message if limit is below 1 or if category
 __________________________________________________________________________________________________________________________________________________________________________
 
 
-## /menu/product
-**Request Format:** /menu/product[?product=*product*]
-
-**Request Type:** GET
-
-**Returned Data Format**: JSON
-
-**Description:** Menu: - Picture URL
-Menu Name
-Price
-
-**Example Request:**  /menu/product[?product=*product*]
-
-**Example Response:**
-
-```json
-[
-  {
-    "id": 1,
-    "name": "CHICKEN RICE",
-    "price": 69.95,
-    "pic_URL":"frkforkofr.com",
-    "description": "very good chicken and rice"
-  },
-  {
-    "id": 2,
-    "name": "CHICKEN STICKY RICE",
-    "price": 69.69,
-    "pic_URL":"69420.com",
-    "description": "nice sticky rice "
-  }
-]
-```
-
-**Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category or gender is invalid.
-
-
-
-__________________________________________________________________________________________________________________________________________________________________________
-
-
 ## /cart
 **Request Format:** /cart[?id=*id*]
 
@@ -196,7 +149,7 @@ ________________________________________________________________________________
 **Returned Data Format**: JSON
 
 
-**Description:** lists items in cart
+**Description:** lists items in cart of a user
 
 
 **Example Request:**  /cart[?id=1234789327654]
@@ -227,54 +180,7 @@ ________________________________________________________________________________
 Responds with a 400 status plain text message if limit is below 1 or if category or gender is invalid.
 
 
-
 __________________________________________________________________________________________________________________________________________________________________________
-
-
-
-## /cart
-**Request Format:** /cart[?id=*id*]
-
-**Request Type:** GET
-
-**Returned Data Format**: JSON
-
-
-**Description:** lists items in cart
-
-
-**Example Request:**  /cart[?id=1234789327654]
-
-**Example Response:**
-
-```json
-  {
-    "member_id": 1,
-    "member_name": "THanat",
-    "items":[{
-        "menu_id": 1,
-        "name": "CHICKEN RICE",
-        "price": 69.95,
-        "pic_URL":"frkforkofr.com/redredredredredred",
-        "description": "very good chicken and rice"
-    }, {
-        "menu_id": 2,
-        "name": "CHICKEN STICKY RICE",
-        "price": 69.69,
-        "pic_URL":"69420.com",
-        "description": "nice sticky rice "
-    }]
-  }
-```
-
-**Error Handling:**
-Responds with a 400 status plain text message if limit is below 1 or if category or gender is invalid.
-
-
-
-__________________________________________________________________________________________________________________________________________________________________________
-
-
 
 
 
