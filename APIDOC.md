@@ -15,8 +15,8 @@ Sports equipment online store webservice providing data of items in the store an
   ```json
 [
   {
-    "coordiante":"123.213124124,12312.123124123",
-    "Address":"Grand Place, Royal Palace, Pranakorn"
+    "coordinate":"123.213124124,12312.123124123",
+    "address":"Grand Place, Royal Palace, Pranakorn"
   }
 ]
 ```
@@ -24,6 +24,101 @@ Sports equipment online store webservice providing data of items in the store an
 **Example Response:**
 
 
+
+**Error Handling:**
+Responds with a 400 status plain text message if limit is below 1 or if category is invalid.
+
+__________________________________________________________________________________________________________________________________________________________________________
+
+# Account APIs
+
+## /create_account
+**Request Format:** /create_account
+
+**Request Type:** POST
+
+**Returned Data Format**: JSON
+
+**Description:** add user info to database
+
+  **Example Request:** /create_account
+
+  ```json
+  {
+    "name": "Thanat",
+    "surname": "Preukkumwong",
+    "birthdate": "05-11-1997",
+    "phone_num": "0898098404",
+    "email": "book_thanat@gmail.com",
+    "password": "MyNameIsBookie",
+    "register_time": "03-11-2020 11:42:35",
+    "address": {
+      "address_name": "CP Tower",
+      "street": "245/33 CP Tower, Silom",
+      "sub_district": "Bangkhlo",
+      "district": "Bangkholaem",
+      "province": "Bangkok",
+      "postal_code": "10120",
+      "notes": "go stright left right",
+      "coordinate": {
+         "latitude": "131.111111",
+         "longtitude": "12.22222222"
+      }
+    }
+  }
+```
+
+**Example Response:**
+"created account for [username]"
+
+
+**Error Handling:**
+Responds with a 400 status plain text message if limit is below 1 or if category is invalid.
+
+__________________________________________________________________________________________________________________________________________________________________________
+
+## /log_in
+**Request Format:** /log_in
+
+**Request Type:** GET
+
+**Returned Data Format**: JSON
+
+**Description:** get user account info
+
+  **Example Request:** /log_in
+  
+  ```json
+  {
+    "phone_num": "0898098404",
+    "password": "MyNameIsBookie"
+  }
+```
+
+**Example Response:**
+
+  ```json
+  {
+    "name": "Thanat",
+    "surname": "Preukkumwong",
+    "birthdate": "05-11-1997",
+    "phone_num": "0898098404",
+    "email": "book_thanat@gmail.com",
+    "address": {
+      "address_name": "CP Tower",
+      "street": "245/33 CP Tower, Silom",
+      "sub_district": "Bangkhlo",
+      "district": "Bangkholaem",
+      "province": "Bangkok",
+      "postal_code": "10120",
+      "notes": "go stright left right",
+      "coordinate": {
+         "latitude": "131.111111",
+         "longtitude": "12.22222222"
+      }
+    }
+  }
+```
 
 **Error Handling:**
 Responds with a 400 status plain text message if limit is below 1 or if category is invalid.
