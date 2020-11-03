@@ -78,7 +78,7 @@ Responds with a 400 status plain text message if limit is below 1 or if category
 __________________________________________________________________________________________________________________________________________________________________________
 
 ## /log_in
-**Request Format:** /log_in
+**Request Format:** /log_in[?phone=*phone*&password=*password*]
 
 **Request Type:** GET
 
@@ -86,14 +86,7 @@ ________________________________________________________________________________
 
 **Description:** get user account info
 
-  **Example Request:** /log_in
-  
-  ```json
-  {
-    "phone_num": "0898098404",
-    "password": "MyNameIsBookie"
-  }
-```
+ **Example Request:** /log_in?phone=08989898989&password=MyNameIsBookie
 
 **Example Response:**
 
