@@ -1,11 +1,12 @@
-//const mysql = require('mysql');
 const mysql = require('promise-mysql');
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const morgan = require("morgan");
 const bodyParser = require('body-parser');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+
+const fetchOrigin = '*';
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -38,6 +39,7 @@ app.get('/login', async (req, res) => {
 //            let result = {
 //                username: data[0].username
 //            }
+            res.set('Access-Control-Allow-Origin', fetchOrigin);
             res.send(data[0].username);
         }
     }).catch(err => handleErr(err, res, null));
@@ -144,7 +146,7 @@ function handleErr(err, res, msg) {
 }
 
 app.use(express.static('public'));
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log("listening on port 8000");
+    console.log("listening on port 3000");
 });
