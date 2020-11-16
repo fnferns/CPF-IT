@@ -35,12 +35,12 @@ app.get('/login', async (req, res) => {
 
     makeQuery("SELECT username FROM test_login WHERE phone_num = ? AND password = ? limit 1", [phonenumReq, passwordReq])
     .then(data => {
-        if (data) {
-//            let result = {
-//                username: data[0].username
-//            }
-            res.set('Access-Control-Allow-Origin', fetchOrigin);
+        res.set('Access-Control-Allow-Origin', fetchOrigin);
+        if (data.length == 1) {
             res.send(data[0].username);
+        } else {
+//            throw new Error("Incorrect account information");
+            res.status(400).send("Invalid username or password");
         }
     }).catch(err => handleErr(err, res, null));
 });
