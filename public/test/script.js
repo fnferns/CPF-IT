@@ -1,6 +1,6 @@
 "use strict";
 
-const baseUrl = "http://localhost:8000";
+const baseUrl = "http://localhost:3000";
 
 window.addEventListener("load", () => {
     /* First Page Login/Signup - Animation */
@@ -23,6 +23,8 @@ window.addEventListener("load", () => {
         
         if (validLogin(phoneInput, passwordInput)) {
             login(phoneInput.value, passwordInput.value);
+        } else {
+            setLoginErr("Invalid username or password");
         }
     });
 
@@ -37,7 +39,24 @@ window.addEventListener("load", () => {
             createAccount(usernameInput.value, phoneInput.value, passwordInput.value, emailInput.value);
         }
     });
+    
+    clearUser();
 });
+
+function clearUser() {
+    localStorage.removeItem("username");
+}
+
+function setLoginErr(msg) {
+    let errText = document.getElementById("invalid-login");
+    if (msg == null) {
+        errText.classList.add("hidden");
+    } else {
+        errText.textContent = msg;
+        errText.classList.remove("hidden");
+    }
+    
+}
 
 function validLogin(phoneInput, passwordInput) {
     let error = false;
@@ -120,9 +139,27 @@ async function createAccount(username, phone, password, email) {
 async function login(phone, password) {
     console.log("logging in: " + phone + password);
     //TODO: 
-    fetchGet("/login?phone_num=" + phone + "&password=" + password, (data) => {
-        console.log(data);
+//    fetchGet("/login?phone_num=" + phone + "&password=" + password, (data) => {
+//        localStorage.setItem("username", data);
+//        document.location.href = "./homepage.html";
+//    }).catch(err => {
+//        console.log("catch err " + err);
+//        setLoginErr(err.message);
+//        return false;
+//    });
+//    return true;
+    
+    fetch(baseUrl + "/login?phone_num=" + phone + "&password=" + password)
+    .then(checkStatus)
+    .then(resp => resp.text())
+    .then(data => {
+        localStorage.setItem("username", data);
+        document.location.href = "./homepage.html";
+    })
+    .catch(err => {
+        setLoginErr("Incorrect account information");
     });
+    return true;
 }
 
 function setErrorInput(elm, error) {
@@ -172,7 +209,8 @@ function fetchPost(url, form, callBack) {
  */
 function checkStatus(response) {
     if (!response.ok) { // response.status >= 200 && response.status < 300
-        throw Error("Error in request: " + response.statusText);
+//        console.log(response);
+        throw Error("Error:" + response.status + " in request: " + response.statusText);
     }
     return response;
 }
