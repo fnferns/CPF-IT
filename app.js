@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 
-const fetchOrigin = '*';
+//const fetchOrigin = '*';
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -35,7 +35,7 @@ app.get('/login', async (req, res) => {
 
     makeQuery("SELECT username FROM test_login WHERE phone_num = ? AND password = ? limit 1", [phonenumReq, passwordReq])
     .then(data => {
-        res.set('Access-Control-Allow-Origin', fetchOrigin);
+//        res.set('Access-Control-Allow-Origin', fetchOrigin);
         if (data.length == 1) {
             res.send(data[0].username);
         } else {
