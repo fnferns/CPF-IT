@@ -150,14 +150,14 @@ async function login(phone, password) {
 //    return true;
     
     fetch(baseUrl + "/login?phone_num=" + phone + "&password=" + password)
-    .then(checkStatus)
+    .then(checkLoginStatus)
     .then(resp => resp.text())
     .then(data => {
         localStorage.setItem("username", data);
         document.location.href = "./homepage.html";
     })
     .catch(err => {
-        setLoginErr("Incorrect account information");
+       handleErr(err); 
     });
     return true;
 }
@@ -207,9 +207,14 @@ function fetchPost(url, form, callBack) {
   * @param {Promise} response - response from server status.
   * @return {Promise} Promise onject.
  */
-function checkStatus(response) {
+function checkLoginStatus(response) {
     if (!response.ok) { // response.status >= 200 && response.status < 300
 //        console.log(response);
+        if (response.status >= 400 && response.status < 500) {
+            setLoginErr("Incorrect account information");
+        } else {
+            setLoginErr("Could not connect to server");
+        }
         throw Error("Error:" + response.status + " in request: " + response.statusText);
     }
     return response;
