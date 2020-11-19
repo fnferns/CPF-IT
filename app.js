@@ -5,7 +5,9 @@ const morgan = require("morgan");
 const bodyParser = require('body-parser');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const axios = require('axios');
 
+const CryptoJS = require("crypto-js");
 //const fetchOrigin = '*';
 
 app.use(morgan("dev"));
@@ -27,6 +29,7 @@ app.get('/test', async (req, res) => {
     
 });
 
+//--------------- Customer -----------------
 app.get('/login', async (req, res) => {
     console.log("attempting to login");
 //    console.log(req);
@@ -34,17 +37,18 @@ app.get('/login', async (req, res) => {
     var passwordReq = req.query.password;
 
     makeQuery("SELECT username FROM test_login WHERE phone_num = ? AND password = ? limit 1", [phonenumReq, passwordReq])
-    .then(data => {
+    .then((data) => {
 //        res.set('Access-Control-Allow-Origin', fetchOrigin);
         if (data.length == 1) {
             res.send(data[0].username);
         } else {
 //            throw new Error("Incorrect account information");
-            res.status(400).send("Invalid username or password");
+            res.status(404).send("Invalid username or password");
         }
     }).catch(err => handleErr(err, res, null));
 });
 
+// TODO:
 app.post('/register', async (req, res) => {
     var today = new Date();
     console.log("attemping to signup");
@@ -88,6 +92,127 @@ app.post('/register', async (req, res) => {
 //  });
 //});
 
+//------------ microPOS API ----------------
+
+const partner_id = 'FSORDTH';
+const password = 'micr0p0s';
+const secret = CryptoJS.HmacSHA256(partner_id, partner_id + password).toString();
+const mPosBaseUrl = 'https://fivestarmicroposservice-uat.cpf.co.th/Microposapi/MsMasterService.svc';
+
+app.get('/getStoresAll', async (req, res) => {
+    mPosFetch('/getStoresAll', null)
+    .then(data => {
+//        console.log(data);
+        res.json(data);
+    })
+    .catch(handleErr);
+});
+
+// TODO: Not working
+app.post('/getProductsAll', async (req, res) => {
+//    let params = {
+//        businessDate: '2020-11-13',
+//        stores: ['0036', '0023']
+//    }
+    let params = req.body;
+//    console.log(req);
+    
+    mPosFetch('/getProductsAll', params)
+    .then(data => {
+        res.json(data);
+    })
+    .catch(handleErr);
+});
+
+app.get('/checkOrderStatus', async (req, res) => {
+    let params = {
+        order_number: req.query.order_num,
+        mobile_number: req.query.mobile
+    }
+    mPosFetch('/checkOrderStatus', params)
+    .then(data => {
+        res.json(data);
+    })
+    .catch(handleErr);
+});
+
+// TODO: not working
+app.post('/sendOrder', async (req, res) => {
+    let params = {
+//        order_data: {
+//            order_number:
+//            company_code:
+//            store_code:
+//            order_date:
+//            start_time:
+//            end_time:
+//            mobile:
+//            status:
+//            amount:
+//            delivery_type:
+//            delivery_fee:
+//            delivery_addr: {
+//                
+//            }
+//            order_details: {
+//        
+//            }
+//        }
+    }
+    mPosFetch('/sendOrder', params)
+    .then(data => {
+        res.json(data);
+    })
+    .catch(handleErr);
+});
+
+app.get('/orderTransactionEnquiry', async (req, res) => {
+    let params = {
+        order_number: req.query.order_num,
+        mobile_number: req.query.mobile
+    }
+    mPosFetch('/orderTransactionEnquiry', params)
+    .then(data => res.json(data))
+    .catch(handleErr);
+});
+
+app.get('/checkOrderItems', async (req, res) => {
+    let params = {
+        order_number: req.query.order_num,
+        mobile_number: req.query.mobile
+    }
+    mPosFetch('/checkOrderItems', params)
+    .then(data => res.json(data))
+    .catch(handleErr);
+});
+
+async function mPosFetch(method, params) {
+    let config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'partner_id': partner_id,
+            'secret': secret
+        }
+    }
+    
+    let res = axios.post(mPosBaseUrl + method, params, config)
+    .then(resp => {
+        let obj = JSON.parse(resp.data.d);
+        
+        if (obj.response_code == 0) {
+            throw Error("Fail to retrieve data from server");
+        }
+//        res.json(obj.data);
+        return obj.data;
+    })
+    .catch(error => {
+        console.error(error);
+//        res.status(500).send("Fail to retrieve data from server");
+        throw Error("Fail to retrieve data from server");
+    });
+    return res;
+}
+
 async function makeQuery(qry, args) {
   let db;
   try {
@@ -120,13 +245,13 @@ async function getDB() {
   return database;
 }
 
-//function checkStatus(response) {
-//  if (response.ok) {
-//    return response;
-//  } else {
-//     throw Error("Error in request: " + response.statusText);
-//  }
-//}
+function checkStatus(response) {
+  if (response.ok) {
+    return response;
+  } else {
+     throw Error("Error in request: " + response.statusText);
+  }
+}
 
 /**
  * Handle error when unable to read source file or invalid get parameters.
