@@ -135,8 +135,6 @@ app.post('/sendOrder', upload.fields([]), async (req, res) => {
     let params = {
         order_data: req.body.order_data
     }
-    // console.log(params);
-    
     mPosFetch('/sendOrder', params)
     .then(data => {
         res.json(data);
@@ -187,8 +185,8 @@ async function mPosFetch(method, params) {
         if (obj.response_code == 0) {
             throw Error("Fail to retrieve data from server");
         }
-//        res.json(obj.data);
-        return obj.data;
+        // console.log(obj);
+        return obj;
     })
     .catch(error => {
         console.error(error);
