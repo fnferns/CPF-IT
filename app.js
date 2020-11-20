@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const axios = require('axios');
+const multer = require('multer');
+const upload = multer();
 
 const CryptoJS = require("crypto-js");
 //const fetchOrigin = '*';
@@ -105,23 +107,16 @@ app.get('/getStoresAll', async (req, res) => {
 //        console.log(data);
         res.json(data);
     })
-    .catch(handleErr);
+    .catch(err => handleErr(err, res, null));
 });
 
-// TODO: Not working
-app.post('/getProductsAll', async (req, res) => {
-//    let params = {
-//        businessDate: '2020-11-13',
-//        stores: ['0036', '0023']
-//    }
+app.post('/getProductsAll', upload.fields([]), async (req, res) => {
     let params = req.body;
-//    console.log(req);
-    
     mPosFetch('/getProductsAll', params)
     .then(data => {
         res.json(data);
     })
-    .catch(handleErr);
+    .catch(err => handleErr(err, res, null));
 });
 
 app.get('/checkOrderStatus', async (req, res) => {
@@ -133,37 +128,20 @@ app.get('/checkOrderStatus', async (req, res) => {
     .then(data => {
         res.json(data);
     })
-    .catch(handleErr);
+    .catch(err => handleErr(err, res, null));
 });
 
-// TODO: not working
-app.post('/sendOrder', async (req, res) => {
+app.post('/sendOrder', upload.fields([]), async (req, res) => {
     let params = {
-//        order_data: {
-//            order_number:
-//            company_code:
-//            store_code:
-//            order_date:
-//            start_time:
-//            end_time:
-//            mobile:
-//            status:
-//            amount:
-//            delivery_type:
-//            delivery_fee:
-//            delivery_addr: {
-//                
-//            }
-//            order_details: {
-//        
-//            }
-//        }
+        order_data: req.body.order_data
     }
+    // console.log(params);
+    
     mPosFetch('/sendOrder', params)
     .then(data => {
         res.json(data);
     })
-    .catch(handleErr);
+    .catch(err => handleErr(err, res, null));
 });
 
 app.get('/orderTransactionEnquiry', async (req, res) => {
@@ -173,7 +151,7 @@ app.get('/orderTransactionEnquiry', async (req, res) => {
     }
     mPosFetch('/orderTransactionEnquiry', params)
     .then(data => res.json(data))
-    .catch(handleErr);
+    .catch(err => handleErr(err, res, null));
 });
 
 app.get('/checkOrderItems', async (req, res) => {
@@ -183,7 +161,14 @@ app.get('/checkOrderItems', async (req, res) => {
     }
     mPosFetch('/checkOrderItems', params)
     .then(data => res.json(data))
-    .catch(handleErr);
+    .catch(err => handleErr(err, res, null));
+});
+
+app.post('/cancelOrder', upload.fields([]), async (req, res) => {
+    let params = req.body;
+    mPosFetch('/cancelOrder', params)
+    .then(data => res.json(data))
+    .catch(err => handleErr(err, res, null));
 });
 
 async function mPosFetch(method, params) {
@@ -208,7 +193,7 @@ async function mPosFetch(method, params) {
     .catch(error => {
         console.error(error);
 //        res.status(500).send("Fail to retrieve data from server");
-        throw Error("Fail to retrieve data from server");
+        throw Error(error.message);
     });
     return res;
 }
