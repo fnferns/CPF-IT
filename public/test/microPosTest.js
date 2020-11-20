@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
     });
     document.getElementById("checkOrderStatus")
         .addEventListener("click", () => {
-        checkOrderStatus('9999999999', '0999999999');
+        checkOrderStatus('35599999999201113100000', '0999999999');
     });
     document.getElementById("sendOrder")
         .addEventListener("click", () => {
@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
     });
     document.getElementById("orderTransactionEnquiry")
         .addEventListener("click", () => {
-        orderTransactionEnquiry('9999999999', '0999999999');
+        orderTransactionEnquiry('35599999999201113100000', '0999999999');
     });
     document.getElementById("checkOrderItems")
         .addEventListener("click", () => {
@@ -27,18 +27,16 @@ window.addEventListener("load", () => {
     });
     document.getElementById("cancelOrder")
         .addEventListener("click", () => {
-        cancelOrder('35520201116152628', '0998882222', 'Im full');
+        cancelOrder('35599999999201113100000', '0999999999', 'Im full');
     });
 });
 
 function getStoresAll() {
-//    console.log("fetching...");
     fetch(baseUrl + "/getStoresAll")
     .then(checkStatus)
     .then(resp => resp.text())
     .then(data => {
-//        console.log(data);
-        let stores = JSON.parse(data);
+        let stores = JSON.parse(data).data.stores;
         document.getElementById("content").textContent = data;
     })
     .catch(err => {
@@ -163,6 +161,10 @@ function cancelOrder(order_num, mobile, reason) {
     .then(checkStatus)
     .then(resp => resp.text())
     .then(data => {
+        let dataObj = JSON.parse(data);
+        if (dataObj.message != 'SUCCESS') {
+            console.log(dataObj.message);
+        }
         document.getElementById("content").textContent = data;
     })
     .catch(err => {
